@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,7 +30,7 @@ public class ProductoFinanciero {
 
     @Id
     @Column(name = "numero_producto", nullable = false, length = 10, unique = true)
-    private BigDecimal numeroProducto;
+    private BigInteger numeroProducto;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cliente", nullable = false)
