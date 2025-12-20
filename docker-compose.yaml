@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: financiero
+    volumes:
+      - db-data-financiero:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - default
+
+volumes:
+  db-data-financiero:
+
+networks:
+  default:
