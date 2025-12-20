@@ -1,17 +1,7 @@
 package com.prueba.tecnica.financiero.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
+import jakarta.persistence.*;
+import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -28,8 +18,9 @@ public class ProductoFinanciero {
     @Column(name = "numero_producto", nullable = false, length = 10, unique = true)
     private BigDecimal numeroProducto;
 
-    @Column(name = "id_cliente", nullable = false)
-    private Integer idCliente;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente", nullable = false)
+    private Cliente cliente;
 
     @Column(name = "tipo_producto", nullable = false, length = 2)
     private String tipoProducto;
