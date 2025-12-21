@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface ProductoFinancieroService {
     List<ProductoFinancieroDTO> buscarTodos();
-    ProductoFinancieroDTO buscarPorId(BigInteger id);
+    ProductoFinancieroDTO buscarPorNumeroProducto(BigInteger id);
     ProductoFinancieroDTO crear(ProductoFinancieroDTO dto);
     ProductoFinancieroDTO actualizar(ProductoFinancieroDTO dto, BigInteger id);
-    void borrarPorId(BigInteger id);
+    void borrarPorNumeroProducto(BigInteger id);
 }

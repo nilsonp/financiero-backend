@@ -8,12 +8,9 @@ import com.prueba.tecnica.financiero.repository.ClienteRepository;
 import lombok.extern.log4j.Log4j2;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
-import org.mockito.BDDMockito;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -44,7 +41,6 @@ class ClienteServiceImplTest {
     private ClienteServiceImpl clienteService;
 
     private List<Cliente> listDeClientes;
-    private List<ClienteDTO> listDTOClientes;
 
     private Cliente cliente;
     private ClienteDTO clienteDTO;

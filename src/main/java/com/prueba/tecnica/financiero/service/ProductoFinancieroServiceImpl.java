@@ -33,14 +33,14 @@ public class ProductoFinancieroServiceImpl implements ProductoFinancieroService 
     }
 
     @Override
-    public ProductoFinancieroDTO buscarPorId(BigInteger id) {
-        log.debug("consultar producto por id: {}", id);
+    public ProductoFinancieroDTO buscarPorNumeroProducto(BigInteger id) {
+        log.debug("consultar producto por numero: {}", id);
         ProductoFinanciero producto = productoFinancieroRepository.findById(id)
                 .orElseThrow(() -> {
-            log.error("producto no encontrado por id: {}", id);
-            return new ResourceNotFoundException("Producto Financiero", "id", id);
+            log.error("producto no encontrado por numero: {}", id);
+            return new ResourceNotFoundException("Producto Financiero", "numero producto", id);
         });
-        log.debug("producot encontrado: {}", id);
+        log.debug("producto financiero encontrado: {}", id);
         return productoFinancieroMapper.toDto(producto);
     }
 
@@ -56,7 +56,7 @@ public class ProductoFinancieroServiceImpl implements ProductoFinancieroService 
     @Override
     public ProductoFinancieroDTO actualizar(ProductoFinancieroDTO dto, BigInteger id) {
         log.debug("actualizar producto: {} - cliente: {}", id, dto.getIdCliente());
-        this.validaSiExisteProductoPorId(id);
+        this.validaSiExisteProductoPorNumero(id);
         this.validaSiExisteClientePorId(dto.getIdCliente());
         ProductoFinanciero producto = productoFinancieroMapper.toEntity(dto);
         producto.setNumeroProducto(id);
@@ -65,7 +65,7 @@ public class ProductoFinancieroServiceImpl implements ProductoFinancieroService 
     }
 
     @Override
-    public void borrarPorId(BigInteger id) {
+    public void borrarPorNumeroProducto(BigInteger id) {
         if (!productoFinancieroRepository.existsById(id)) {
             throw new ResourceNotFoundException("ProductoFinanciero", "numeroProducto", id);
         }
@@ -79,7 +79,7 @@ public class ProductoFinancieroServiceImpl implements ProductoFinancieroService 
         }
     }
 
-    private void validaSiExisteProductoPorId(BigInteger id) {
+    private void validaSiExisteProductoPorNumero(BigInteger id) {
         if (!productoFinancieroRepository.existsById(id)) {
             log.error("producto financiero no encontrado: {}", id);
             throw new ResourceNotFoundException("ProductoFinanciero", "numeroProducto", id);
