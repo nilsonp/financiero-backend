@@ -10,6 +10,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,12 +22,21 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "cliente")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "cliente",
+        uniqueConstraints = {
+        @UniqueConstraint(
+                name = "correo_electronico_unique",
+                columnNames = {"correo_electronico"}),
+        @UniqueConstraint(
+                name = "tipo_numero_identificacion_unique",
+                columnNames = {"tipo_identificacion", "numero_identificacion"})
+        }
+)
 public class Cliente {
 
     @Id

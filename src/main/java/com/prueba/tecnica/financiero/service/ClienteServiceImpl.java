@@ -25,8 +25,9 @@ public class ClienteServiceImpl implements ClienteService {
         log.debug("consultar todos los clientes");
         List<Cliente> clientes = clienteRepository.findAll();
         log.debug("total clientes todos: {}", clientes.size());
-
-        return clienteMapper.toListDto(clientes);
+        List<ClienteDTO> listDto = clienteMapper.toListDto(clientes);
+        log.debug("total clientes dto: {}",listDto.size());
+        return listDto;
     }
 
     @Override
