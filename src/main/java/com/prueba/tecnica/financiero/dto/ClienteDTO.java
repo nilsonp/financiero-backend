@@ -16,22 +16,22 @@ public class ClienteDTO {
 
     private Integer idCliente;
 
-    @NotEmpty
+    @NotEmpty(message = "Tipo identificacion es obligatorio")
     private String tipoIdentificacion;
 
-    @NotEmpty
+    @NotEmpty(message = "Numero de identificacion es obligatorio")
     private String numeroIdentificacion;
 
-    @NotEmpty
+    @NotEmpty(message = "Nombres es obligatorio")
     private String nombres;
 
-    @NotEmpty
+    @NotEmpty(message = "Apellidos es obligatorio")
     private String apellidos;
 
-    @NotEmpty
+    @NotEmpty(message = "Correo electronico es obligatorio")
     private String correoElectronico;
 
-    @NotEmpty
+    @NotEmpty(message = "Fecha nacimiento es obligatorio")
     private LocalDate fechaNacimiento;
 
 }

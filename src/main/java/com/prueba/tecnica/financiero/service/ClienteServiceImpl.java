@@ -10,7 +10,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Log4j2
 @Service
@@ -31,7 +30,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public Optional<ClienteDTO> buscarPorId(Integer id) {
+    public ClienteDTO buscarPorId(Integer id) {
         log.debug("consultar cliente por id: {}", id);
         Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> {
@@ -39,7 +38,7 @@ public class ClienteServiceImpl implements ClienteService {
                     return new ResourceNotFoundException("Cliente", "id", id);
                 });
 
-        return Optional.of(clienteMapper.toDto(cliente));
+        return clienteMapper.toDto(cliente);
     }
 
     @Override
@@ -53,11 +52,8 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ClienteDTO actualizar(ClienteDTO dto, Integer id) {
         log.debug("actualizar cliente: {}", id);
-        Cliente entity = clienteRepository.findById(dto.getIdCliente()).orElseThrow(() -> {
-            log.error("actualizar cliente no encontrado: {}", id);
-            return new ResourceNotFoundException("Cliente", "id", id);
-        });
-        clienteRepository.save(clienteMapper.toEntity(dto));
+        this.validaSiExisteClientePorId(id);
+        Cliente entity = clienteRepository.save(clienteMapper.toEntity(dto));
         log.debug("cliente actualizado id: {}", entity.getIdCliente());
         return clienteMapper.toDto(entity);
 
@@ -66,11 +62,15 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public void borrarPorId(Integer id) {
         log.debug("eliminar cliente id: {}", id);
-        clienteRepository.findById(id).orElseThrow(() -> {
-            log.error("eliminar cliente no encontrado: {}", id);
-            return new ResourceNotFoundException("Cliente", "id", id);
-        });
+        this.validaSiExisteClientePorId(id);
         clienteRepository.deleteById(id);
         log.debug("cliente eliminado id: {}", id);
+    }
+
+    private void validaSiExisteClientePorId(Integer idCliente) {
+        if(!clienteRepository.existsById(idCliente)) {
+            log.error("cliente no encontrado id: {}", idCliente);
+            throw new ResourceNotFoundException("Cliente", "id", idCliente);
+        }
     }
 }

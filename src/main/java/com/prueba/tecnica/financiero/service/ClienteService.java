@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ClienteService {
     List<ClienteDTO> buscarTodos();
-    Optional<ClienteDTO> buscarPorId(Integer id);
+    ClienteDTO buscarPorId(Integer id);
     ClienteDTO crear(ClienteDTO dto);
     ClienteDTO actualizar(ClienteDTO dto, Integer id);
     void borrarPorId(Integer id);

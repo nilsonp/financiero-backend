@@ -80,7 +80,7 @@ class ClienteServiceImplTest {
         when(clienteRepository.findById(anyInt())).thenReturn(Optional.of(cliente));
 
         // Act
-        Optional<ClienteDTO> result = clienteService.buscarPorId(cliente.getIdCliente());
+        Optional<ClienteDTO> result = Optional.ofNullable(clienteService.buscarPorId(cliente.getIdCliente()));
 
         // Assert
         assertTrue(result.isPresent());
@@ -115,7 +115,7 @@ class ClienteServiceImplTest {
     @Test
     void actualizar_ReturnaClienteActualizado() {
         // Arrange
-        when(clienteRepository.findById(anyInt())).thenReturn(Optional.of(cliente));
+        when(clienteRepository.existsById(anyInt())).thenReturn(Boolean.TRUE);
         when(clienteRepository.save(any(Cliente.class))).thenReturn(cliente);
 
         // Act
@@ -124,41 +124,41 @@ class ClienteServiceImplTest {
         // Assert
         assertNotNull(result);
         assertEquals(clienteDTO.getIdCliente(), result.getIdCliente());
-        verify(clienteRepository, times(1)).findById(anyInt());
+        verify(clienteRepository, times(1)).existsById(anyInt());
         verify(clienteRepository, times(1)).save(any(Cliente.class));
     }
 
     @Test
     void actualizar_NoEncontrado_LanzarResourceNotFoundException() {
         // Arrange
-        when(clienteRepository.findById(anyInt())).thenReturn(Optional.empty());
+        when(clienteRepository.existsById(anyInt())).thenReturn(Boolean.FALSE);
 
         // Act & Assert
         assertThrows(ResourceNotFoundException.class, () -> clienteService.actualizar(clienteDTO, 999));
-        verify(clienteRepository, times(1)).findById(anyInt());
+        verify(clienteRepository, times(1)).existsById(anyInt());
     }
 
     @Test
     void borrarPorId_EliminaCliente() {
         // Arrange
-        when(clienteRepository.findById(anyInt())).thenReturn(Optional.of(cliente));
+        when(clienteRepository.existsById(anyInt())).thenReturn(Boolean.TRUE);
         doNothing().when(clienteRepository).deleteById(anyInt());
 
         // Act
         clienteService.borrarPorId(cliente.getIdCliente());
 
         // Assert
-        verify(clienteRepository, times(1)).findById(anyInt());
+        verify(clienteRepository, times(1)).existsById(anyInt());
         verify(clienteRepository, times(1)).deleteById(anyInt());
     }
 
     @Test
     void borrarPorId_NoEncontrado_LanzarResourceNotFoundException() {
         // Arrange
-        when(clienteRepository.findById(anyInt())).thenThrow(new ResourceNotFoundException("Cliente", "id", anyInt()));
+        when(clienteRepository.existsById(anyInt())).thenReturn(Boolean.FALSE);
 
         // Act & Assert
         assertThrows(ResourceNotFoundException.class, () -> clienteService.borrarPorId(999));
-        verify(clienteRepository, times(1)).findById(anyInt());
+        verify(clienteRepository, times(1)).existsById(anyInt());
     }
 }
