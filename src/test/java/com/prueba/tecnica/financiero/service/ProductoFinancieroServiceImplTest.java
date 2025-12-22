@@ -49,7 +49,7 @@ class ProductoFinancieroServiceImplTest {
     private ProductoFinancieroDTO productoFinancieroDTO;
 
     private final BigInteger numeroCuentaCorriente = new BigInteger("3334567890");
-    private final BigInteger numeroCuentaAhorros = new BigInteger("3334567890");
+    private final BigInteger numeroCuentaAhorros = new BigInteger("5334567890");
 
     @BeforeEach
     void setUp() {
