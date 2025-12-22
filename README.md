@@ -11,3 +11,16 @@ Iniciar instancia docker, solo el servicio de postgresql:
 ```shell
 docker compose -f docker-compose.yaml --profile db up -d 
 ```
+
+### iniciar aplicacion spring boot
+```shell
+./mvnw compile spring-boot:start
+```
+
+### Creacion de Base de datos 
+
+Al iniciar la primera vez, se ejecutya script de sql que genera estructura y agrega datos de prueba. Este script se encuentra en la ruta: `resource/db/changelog/ `
+
+### Modelo entidad relacion 
+
+![ER-Financiero.png](ER-Financiero.png)
