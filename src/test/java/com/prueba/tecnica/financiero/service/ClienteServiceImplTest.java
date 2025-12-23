@@ -5,6 +5,8 @@ import com.prueba.tecnica.financiero.dto.ClienteMapper;
 import com.prueba.tecnica.financiero.exception.ResourceNotFoundException;
 import com.prueba.tecnica.financiero.model.Cliente;
 import com.prueba.tecnica.financiero.repository.ClienteRepository;
+import com.prueba.tecnica.financiero.service.impl.ClienteNegocioServiceImpl;
+import com.prueba.tecnica.financiero.service.impl.ClienteServiceImpl;
 import lombok.extern.log4j.Log4j2;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +42,8 @@ class ClienteServiceImplTest {
 
     private ClienteServiceImpl clienteService;
 
+    private ClienteNegocioServiceImpl clienteNegocio;
+
     private List<Cliente> listDeClientes;
 
     private Cliente cliente;
@@ -47,7 +51,9 @@ class ClienteServiceImplTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        clienteService = new ClienteServiceImpl(clienteRepository, clienteMapper);
+
+        clienteNegocio = new ClienteNegocioServiceImpl(clienteRepository);
+        clienteService = new ClienteServiceImpl(clienteRepository, clienteMapper, clienteNegocio);
         this.listDeClientes = Instancio.ofList(Cliente.class).size(11).create();
 
         cliente = Instancio.of(Cliente.class)

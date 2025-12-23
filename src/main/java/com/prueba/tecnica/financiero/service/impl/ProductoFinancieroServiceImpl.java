@@ -1,4 +1,4 @@
-package com.prueba.tecnica.financiero.service;
+package com.prueba.tecnica.financiero.service.impl;
 
 import com.prueba.tecnica.financiero.dto.ProductoFinancieroDTO;
 import com.prueba.tecnica.financiero.dto.ProductoFinancieroMapper;
@@ -6,6 +6,9 @@ import com.prueba.tecnica.financiero.exception.ResourceNotFoundException;
 import com.prueba.tecnica.financiero.model.ProductoFinanciero;
 import com.prueba.tecnica.financiero.repository.ClienteRepository;
 import com.prueba.tecnica.financiero.repository.ProductoFinancieroRepository;
+import com.prueba.tecnica.financiero.service.ClienteNegocioService;
+import com.prueba.tecnica.financiero.service.ProductoFinancieroNegocioService;
+import com.prueba.tecnica.financiero.service.ProductoFinancieroService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -20,7 +23,8 @@ public class ProductoFinancieroServiceImpl implements ProductoFinancieroService 
 
     private final ProductoFinancieroRepository productoFinancieroRepository;
     private final ProductoFinancieroMapper productoFinancieroMapper;
-    private final ClienteRepository clienteRepository;
+    private final ClienteNegocioService clienteNegocio;
+    private final ProductoFinancieroNegocioService productoFinancieroNegocio;
 
     @Override
     public List<ProductoFinancieroDTO> buscarTodos() {
@@ -47,7 +51,7 @@ public class ProductoFinancieroServiceImpl implements ProductoFinancieroService 
     @Override
     public ProductoFinancieroDTO crear(ProductoFinancieroDTO dto) {
         log.debug("crear producto: {} - cliente: {}", dto.getTipoProducto(), dto.getIdCliente());
-        this.validaSiExisteClientePorId(dto.getIdCliente());
+        clienteNegocio.validaSiExisteClientePorId(dto.getIdCliente());
         ProductoFinanciero savedProducto = productoFinancieroRepository.save(productoFinancieroMapper.toEntity(dto));
         log.debug("producto creado numero: {} - cliente: {}", savedProducto.getNumeroProducto(), savedProducto.getCliente().getIdCliente());
         return productoFinancieroMapper.toDto(savedProducto);
@@ -56,8 +60,8 @@ public class ProductoFinancieroServiceImpl implements ProductoFinancieroService 
     @Override
     public ProductoFinancieroDTO actualizar(ProductoFinancieroDTO dto, BigInteger id) {
         log.debug("actualizar producto: {} - cliente: {}", id, dto.getIdCliente());
-        this.validaSiExisteProductoPorNumero(id);
-        this.validaSiExisteClientePorId(dto.getIdCliente());
+        productoFinancieroNegocio.validaSiExisteProductoPorNumero(id);
+        clienteNegocio.validaSiExisteClientePorId(dto.getIdCliente());
         ProductoFinanciero producto = productoFinancieroMapper.toEntity(dto);
         producto.setNumeroProducto(id);
         ProductoFinanciero updatedProducto = productoFinancieroRepository.save(producto);
@@ -70,19 +74,5 @@ public class ProductoFinancieroServiceImpl implements ProductoFinancieroService 
             throw new ResourceNotFoundException("ProductoFinanciero", "numeroProducto", id);
         }
         productoFinancieroRepository.deleteById(id);
-    }
-
-    private void validaSiExisteClientePorId(Integer idCliente) {
-        if(!clienteRepository.existsById(idCliente)) {
-            log.error("cliente no encontrado id: {}", idCliente);
-            throw new ResourceNotFoundException("Cliente", "id", idCliente);
-        }
-    }
-
-    private void validaSiExisteProductoPorNumero(BigInteger id) {
-        if (!productoFinancieroRepository.existsById(id)) {
-            log.error("producto financiero no encontrado: {}", id);
-            throw new ResourceNotFoundException("ProductoFinanciero", "numeroProducto", id);
-        }
     }
 }

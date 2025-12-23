@@ -1,10 +1,12 @@
-package com.prueba.tecnica.financiero.service;
+package com.prueba.tecnica.financiero.service.impl;
 
 import com.prueba.tecnica.financiero.dto.ClienteDTO;
 import com.prueba.tecnica.financiero.dto.ClienteMapper;
 import com.prueba.tecnica.financiero.exception.ResourceNotFoundException;
 import com.prueba.tecnica.financiero.model.Cliente;
 import com.prueba.tecnica.financiero.repository.ClienteRepository;
+import com.prueba.tecnica.financiero.service.ClienteNegocioService;
+import com.prueba.tecnica.financiero.service.ClienteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository clienteRepository;
     private final ClienteMapper clienteMapper;
+    private final ClienteNegocioService clienteNegocio;
 
     @Override
     public List<ClienteDTO> buscarTodos() {
@@ -45,14 +48,14 @@ public class ClienteServiceImpl implements ClienteService {
     public ClienteDTO crear(ClienteDTO dto) {
         log.debug("crear cliente: {}", dto.getNumeroIdentificacion());
         Cliente entity = clienteRepository.save(clienteMapper.toEntity(dto));
-        log.debug("cliente creado id:", entity.getIdCliente());
+        log.debug("cliente creado id: {}", entity.getIdCliente());
         return clienteMapper.toDto(entity);
     }
 
     @Override
     public ClienteDTO actualizar(ClienteDTO dto, Integer id) {
         log.debug("actualizar cliente: {}", id);
-        this.validaSiExisteClientePorId(id);
+        clienteNegocio.validaSiExisteClientePorId(id);
         Cliente entity = clienteRepository.save(clienteMapper.toEntity(dto));
         log.debug("cliente actualizado id: {}", entity.getIdCliente());
         return clienteMapper.toDto(entity);
@@ -62,15 +65,9 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public void borrarPorId(Integer id) {
         log.debug("eliminar cliente id: {}", id);
-        this.validaSiExisteClientePorId(id);
+        clienteNegocio.validaSiExisteClientePorId(id);
         clienteRepository.deleteById(id);
         log.debug("cliente eliminado id: {}", id);
     }
 
-    private void validaSiExisteClientePorId(Integer idCliente) {
-        if(!clienteRepository.existsById(idCliente)) {
-            log.error("cliente no encontrado id: {}", idCliente);
-            throw new ResourceNotFoundException("Cliente", "id", idCliente);
-        }
-    }
 }

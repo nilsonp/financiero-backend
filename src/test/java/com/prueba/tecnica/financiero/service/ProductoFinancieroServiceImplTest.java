@@ -7,6 +7,9 @@ import com.prueba.tecnica.financiero.model.Cliente;
 import com.prueba.tecnica.financiero.model.ProductoFinanciero;
 import com.prueba.tecnica.financiero.repository.ClienteRepository;
 import com.prueba.tecnica.financiero.repository.ProductoFinancieroRepository;
+import com.prueba.tecnica.financiero.service.impl.ClienteNegocioServiceImpl;
+import com.prueba.tecnica.financiero.service.impl.ProductoFinancieroNegocioServiceImpl;
+import com.prueba.tecnica.financiero.service.impl.ProductoFinancieroServiceImpl;
 import org.instancio.Instancio;
 import org.instancio.Select;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,6 +47,10 @@ class ProductoFinancieroServiceImplTest {
 
     private ProductoFinancieroServiceImpl productoFinancieroService;
 
+    private ClienteNegocioServiceImpl clienteNegocio;
+
+    private ProductoFinancieroNegocioServiceImpl productoFinancieroNegocio;
+
     private List<ProductoFinanciero> listOfProductoFinanciero;
     private ProductoFinanciero productoFinanciero;
     private ProductoFinancieroDTO productoFinancieroDTO;
@@ -54,7 +61,9 @@ class ProductoFinancieroServiceImplTest {
     @BeforeEach
     void setUp() {
 
-        productoFinancieroService = new ProductoFinancieroServiceImpl(productoFinancieroRepository, productoFinancieroMapper, clienteRepository);
+        clienteNegocio = new ClienteNegocioServiceImpl(clienteRepository);
+        productoFinancieroNegocio = new ProductoFinancieroNegocioServiceImpl(productoFinancieroRepository);
+        productoFinancieroService = new ProductoFinancieroServiceImpl(productoFinancieroRepository, productoFinancieroMapper, clienteNegocio, productoFinancieroNegocio);
 
         Cliente cliente = Instancio.of(Cliente.class).create();
 
