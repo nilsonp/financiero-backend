@@ -1,14 +1,6 @@
 package com.prueba.tecnica.financiero.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,7 +35,7 @@ public class ProductoFinanciero {
     private String estadoProducto;
 
     @Column(name = "saldo", nullable = false)
-    private Double saldo;
+    private BigDecimal saldo;
 
     @Column(name = "execto_gmf", nullable = false)
     private Boolean exectoGmf;
@@ -63,5 +55,13 @@ public class ProductoFinanciero {
     @PreUpdate
     protected void onUpdate() {
         fechaModificacion = LocalDateTime.now();
+    }
+
+    public void debitar(BigDecimal monto) {
+        this.saldo = this.saldo.subtract(monto);
+    }
+
+    public void acreditar(BigDecimal monto) {
+        this.saldo = this.saldo.add(monto);
     }
 }
