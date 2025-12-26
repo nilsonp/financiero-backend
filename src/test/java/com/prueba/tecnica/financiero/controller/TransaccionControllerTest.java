@@ -93,7 +93,10 @@ class TransaccionControllerTest {
         // Assert
         result.andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.errors").exists());
+                .andExpect(jsonPath("$.errors").exists())
+                .andExpect(jsonPath("$.errors.monto").value("Monto es obligatorio"))
+                .andExpect(jsonPath("$.errors.cuentaOrigen").value("Cuenta Origen es obligatorio"))
+                .andExpect(jsonPath("$.errors.tipoTransaccion").value("Tipo de transaccion es obligatorio"));
 
         Mockito.verify(transaccionService, Mockito.never()).crearTransaccion(any());
     }
@@ -136,7 +139,8 @@ class TransaccionControllerTest {
         // Assert
         result.andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.errors").exists());
+                .andExpect(jsonPath("$.errors").exists())
+                .andExpect(jsonPath("$.errors.tipoTransaccion").value("Tipo de transaccion es obligatorio"));
 
         Mockito.verify(transaccionService, Mockito.never()).crearTransaccion(any());
     }
@@ -148,9 +152,6 @@ class TransaccionControllerTest {
                 .set(field(TransaccionDTO::getMonto), BigDecimal.valueOf(-100.00))
                 .create();
 
-        when(transaccionService.crearTransaccion(any(TransaccionDTO.class)))
-                .thenThrow(new IllegalArgumentException("El monto debe ser positivo"));
-
         // Act
         ResultActions result = mockMvc.perform(post("/api/transacciones")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -159,9 +160,10 @@ class TransaccionControllerTest {
         // Assert
         result.andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message").value("El monto debe ser positivo"));
+                .andExpect(jsonPath("$.errors").exists())
+                .andExpect(jsonPath("$.errors.monto").value("Monto debe ser mayor a cero (0)"));
 
-        Mockito.verify(transaccionService, Mockito.times(1)).crearTransaccion(any(TransaccionDTO.class));
+        Mockito.verify(transaccionService, Mockito.never()).crearTransaccion(any());
     }
 
     @Test
@@ -171,9 +173,6 @@ class TransaccionControllerTest {
                 .set(field(TransaccionDTO::getMonto), BigDecimal.ZERO)
                 .create();
 
-        when(transaccionService.crearTransaccion(any(TransaccionDTO.class)))
-                .thenThrow(new IllegalArgumentException("El monto debe ser mayor que cero"));
-
         // Act
         ResultActions result = mockMvc.perform(post("/api/transacciones")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -182,8 +181,9 @@ class TransaccionControllerTest {
         // Assert
         result.andExpect(status().isBadRequest())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message").value("El monto debe ser mayor que cero"));
+                .andExpect(jsonPath("$.errors").exists())
+                .andExpect(jsonPath("$.errors.monto").value("Monto debe ser mayor a cero (0)"));
 
-        Mockito.verify(transaccionService, Mockito.times(1)).crearTransaccion(any(TransaccionDTO.class));
+        Mockito.verify(transaccionService, Mockito.never()).crearTransaccion(any());
     }
 }

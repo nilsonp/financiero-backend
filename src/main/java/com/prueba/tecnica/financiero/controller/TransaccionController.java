@@ -24,12 +24,11 @@ public class TransaccionController {
 
     @PostMapping
     public ResponseEntity<TransaccionDTO> crearTransaccion(@RequestBody @Valid TransaccionDTO transaccionDTO) {
-
         log.info("crear transaccion tipo: {} - numeroProducto Origen: {}", transaccionDTO.getTipoTransaccion(),
                 transaccionDTO.getCuentaOrigen());
         TransaccionDTO nuevaTransaccion = transaccionService.crearTransaccion(transaccionDTO);
         log.info("generada nueva transaccion tipo: {} - id: {}", transaccionDTO.getTipoTransaccion(),
-                transaccionDTO.getTransaccionId());
+                nuevaTransaccion.getTransaccionId());
 
         return new ResponseEntity<>(nuevaTransaccion, HttpStatus.CREATED);
     }

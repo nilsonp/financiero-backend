@@ -2,6 +2,7 @@ package com.prueba.tecnica.financiero.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -29,6 +30,7 @@ public class TransaccionDTO {
     private BigInteger cuentaDestino;
 
     @NotNull(message = "Monto es obligatorio")
+    @Positive(message = "Monto debe ser mayor a cero (0)")
     private BigDecimal monto;
 
     private LocalDateTime fechaTransaccion;
