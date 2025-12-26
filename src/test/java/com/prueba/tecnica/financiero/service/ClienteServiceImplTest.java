@@ -40,9 +40,9 @@ class ClienteServiceImplTest {
 
     private final ClienteMapper clienteMapper = Mappers.getMapper(ClienteMapper.class);
 
-    private ClienteServiceImpl clienteService;
-
     private ClienteNegocioServiceImpl clienteNegocio;
+
+    private ClienteServiceImpl clienteService;
 
     private List<Cliente> listDeClientes;
 
@@ -56,8 +56,7 @@ class ClienteServiceImplTest {
         clienteService = new ClienteServiceImpl(clienteRepository, clienteMapper, clienteNegocio);
         this.listDeClientes = Instancio.ofList(Cliente.class).size(11).create();
 
-        cliente = Instancio.of(Cliente.class)
-                .create();
+        cliente = Instancio.of(Cliente.class).create();
 
         clienteDTO = clienteMapper.toDto(cliente);
     }
