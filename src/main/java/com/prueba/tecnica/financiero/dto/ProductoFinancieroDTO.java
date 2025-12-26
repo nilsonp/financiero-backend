@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 
@@ -26,7 +27,7 @@ public class ProductoFinancieroDTO {
     private String estadoProducto;
 
     @Min(value = 0, message = "Saldo valor minimo cero")
-    private Double saldo;
+    private BigDecimal saldo;
 
     @NotEmpty(message = "Excento GMF es obligatorio")
     private Boolean exectoGmf;

@@ -19,6 +19,7 @@ import org.mapstruct.factory.Mappers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +48,6 @@ class ProductoFinancieroServiceImplTest {
 
     private ProductoFinancieroServiceImpl productoFinancieroService;
 
-    private ClienteNegocioServiceImpl clienteNegocio;
-
-    private ProductoFinancieroNegocioServiceImpl productoFinancieroNegocio;
-
     private List<ProductoFinanciero> listOfProductoFinanciero;
     private ProductoFinanciero productoFinanciero;
     private ProductoFinancieroDTO productoFinancieroDTO;
@@ -61,8 +58,8 @@ class ProductoFinancieroServiceImplTest {
     @BeforeEach
     void setUp() {
 
-        clienteNegocio = new ClienteNegocioServiceImpl(clienteRepository);
-        productoFinancieroNegocio = new ProductoFinancieroNegocioServiceImpl(productoFinancieroRepository);
+        ClienteNegocioServiceImpl clienteNegocio = new ClienteNegocioServiceImpl(clienteRepository);
+        ProductoFinancieroNegocioServiceImpl productoFinancieroNegocio = new ProductoFinancieroNegocioServiceImpl(productoFinancieroRepository);
         productoFinancieroService = new ProductoFinancieroServiceImpl(productoFinancieroRepository, productoFinancieroMapper, clienteNegocio, productoFinancieroNegocio);
 
         Cliente cliente = Instancio.of(Cliente.class).create();
@@ -72,7 +69,7 @@ class ProductoFinancieroServiceImplTest {
                 .set(Select.field(ProductoFinanciero::getCliente), cliente)
                 .set(Select.field(ProductoFinanciero::getTipoProducto), "CC")
                 .set(Select.field(ProductoFinanciero::getEstadoProducto), "A")
-                .set(Select.field(ProductoFinanciero::getSaldo), 1000.0)
+                .set(Select.field(ProductoFinanciero::getSaldo), new BigDecimal("1000.0"))
                 .set(Select.field(ProductoFinanciero::getExectoGmf), false)
                 .create();
 
@@ -85,7 +82,7 @@ class ProductoFinancieroServiceImplTest {
                         .set(Select.field(ProductoFinanciero::getCliente), cliente)
                         .set(Select.field(ProductoFinanciero::getTipoProducto), "CA")
                         .set(Select.field(ProductoFinanciero::getEstadoProducto), "A")
-                        .set(Select.field(ProductoFinanciero::getSaldo), 1000.0)
+                        .set(Select.field(ProductoFinanciero::getSaldo), new BigDecimal("1000.0"))
                         .set(Select.field(ProductoFinanciero::getExectoGmf), false)
                         .create()
         );
@@ -95,7 +92,7 @@ class ProductoFinancieroServiceImplTest {
                 .set(Select.field(ProductoFinancieroDTO::getIdCliente), 1)
                 .set(Select.field(ProductoFinancieroDTO::getTipoProducto), "CC")
                 .set(Select.field(ProductoFinancieroDTO::getEstadoProducto), "A")
-                .set(Select.field(ProductoFinancieroDTO::getSaldo), 1000.0)
+                .set(Select.field(ProductoFinancieroDTO::getSaldo), new BigDecimal("1000.0"))
                 .set(Select.field(ProductoFinancieroDTO::getExectoGmf), false)
                 .create();
     }

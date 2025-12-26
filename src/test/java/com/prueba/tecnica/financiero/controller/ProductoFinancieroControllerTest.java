@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -53,7 +54,7 @@ class ProductoFinancieroControllerTest {
                 .set(Select.field(ProductoFinancieroDTO::getIdCliente), 1)
                 .set(Select.field(ProductoFinancieroDTO::getTipoProducto), "CC")
                 .set(Select.field(ProductoFinancieroDTO::getEstadoProducto), "A")
-                .set(Select.field(ProductoFinancieroDTO::getSaldo), 1000.0)
+                .set(Select.field(ProductoFinancieroDTO::getSaldo), new BigDecimal("1000.0"))
                 .set(Select.field(ProductoFinancieroDTO::getExectoGmf), false)
                 .create();
 
