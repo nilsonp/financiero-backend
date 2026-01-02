@@ -1,5 +1,6 @@
-package com.prueba.tecnica.financiero.security;
+package com.prueba.tecnica.financiero.security.config;
 
+import com.prueba.tecnica.financiero.security.service.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
